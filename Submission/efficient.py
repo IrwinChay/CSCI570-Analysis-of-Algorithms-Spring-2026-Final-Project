@@ -15,6 +15,8 @@ ALPHA = {
 def generate_string(base, indices) -> str:
     s = base
     for i in indices:
+        if i < 0 or i >= len(s):
+            raise ValueError(f"Index {i} out of range for string of length {len(s)}.")
         s = s[:i + 1] + s + s[i + 1:]
     return s
 
@@ -22,6 +24,8 @@ def generate_string(base, indices) -> str:
 def parse_input(filepath) -> tuple:
     with open(filepath, 'r') as f:
         lines = [line.strip() for line in f if line.strip()]
+    if len(lines) < 2:
+        raise ValueError("Input file must contain two base strings.")
     i = 0
     string1 = lines[i]
     i += 1
@@ -29,15 +33,15 @@ def parse_input(filepath) -> tuple:
     while i < len(lines) and lines[i].isdigit():
         indices1.append(int(lines[i]))
         i += 1
+    if i >= len(lines):
+        raise ValueError("Input file does not contain a second base string.")
     string2 = lines[i]
     i += 1
     indices2 = []
     while i < len(lines) and lines[i].isdigit():
         indices2.append(int(lines[i]))
         i += 1
-    output_string1 = generate_string(string1, indices1)
-    output_string2 = generate_string(string2, indices2)
-    return output_string1, output_string2
+    return generate_string(string1, indices1), generate_string(string2, indices2)
 
 
 # Space-efficient forward dynamic programming that returns only the last row of the cost table
@@ -228,4 +232,11 @@ def main() -> None:
         f.write(str(memory) + '\n')
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) < 3:
+        print("Input must contain two file paths")
+        sys.exit(1)
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        sys.exit(1)
