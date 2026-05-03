@@ -95,9 +95,9 @@ def dp_alignment(X, Y, res1, res2) -> None:
         dp_curr = dp[i]
         for j in range(1, n + 1):
             # Diagonal: match/mismatch
-            match  = dp_prev[j - 1] + alpha_row[Y[j - 1]]
+            match = dp_prev[j - 1] + alpha_row[Y[j - 1]]
             # Up: gap in Y
-            delete = dp_prev[j]     + DELTA
+            delete = dp_prev[j] + DELTA
             # Left: gap in X
             insert = dp_curr[j - 1] + DELTA
             if match <= delete:
@@ -233,10 +233,6 @@ def main() -> None:
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print("Input must contain two file paths")
+        sys.stderr.write("Input must contain two file paths\n")
         sys.exit(1)
-    try:
-        main()
-    except Exception as e:
-        print(e)
-        sys.exit(1)
+    main()
