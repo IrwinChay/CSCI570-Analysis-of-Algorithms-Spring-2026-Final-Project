@@ -73,7 +73,7 @@ def generate_strings(f_path):
 
 def sequence_alignment(s, t):
     start_memory = process_memory()
-    M = [[0 for _ in range(len(s) + 1)] for _ in range(len(t) + 1)]
+    M = [[0 for _ in range(len(t) + 1)] for _ in range(len(s) + 1)]
     # base cases where one string is empty
     for i in range(1, len(s) + 1):
         M[i][0] = i * DELTA
